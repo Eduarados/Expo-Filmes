@@ -1,63 +1,101 @@
 import React from 'react';
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
 
-export default function Filmes({ movies }) {
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+} from 'react-native';
+
+export default function Filmes({ title, movies }) {
+
+  const renderMovie = ({ item }) => (
+
+    <View style={styles.card}>
+
+      <Image
+        source={{
+          uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`
+        }}
+        style={styles.image}
+      />
+
+      <Text
+        style={styles.movieTitle}
+        numberOfLines={2}
+      >
+        {item.title}
+      </Text>
+
+    </View>
+
+  );
 
   return (
 
-    <FlatList
-      data={movies}
+    <View style={styles.container}>
 
-      keyExtractor={(item) => item.id.toString()}
+      <Text style={styles.title}>
+        {title}
+      </Text>
 
-      renderItem={({ item }) => (
+      <FlatList
+        horizontal
+        data={movies}
+        renderItem={renderMovie}
+        keyExtractor={(item) => item.id.toString()}
 
-        <View style={styles.card}>
+        showsHorizontalScrollIndicator={false}
 
-          <Image
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`
-            }}
+        nestedScrollEnabled
 
-            style={styles.image}
-          />
+        initialNumToRender={5}
+        maxToRenderPerBatch={5}
+        windowSize={5}
+        removeClippedSubviews
 
-          <Text style={styles.title}>
-            {item.title}
-          </Text>
+      />
 
-          <Text>
-            {item.vote_average}
-          </Text>
+    </View>
 
-          <Text>
-            {item.release_date}
-          </Text>
-
-        </View>
-      )}
-    />
   );
 }
 
 const styles = StyleSheet.create({
 
-  card: {
-    alignItems: 'center',
+  container: {
     marginBottom: 30,
-  },
-
-  image: {
-    width: 200,
-    height: 300,
-    borderRadius: 10,
+    width: '100%',
+    flexdisplay: 'grid',
+    flexDirection: 'column',
   },
 
   title: {
-    fontSize: 18,
-    marginTop: 10,
+    color: '#fff',
+    fontSize: 24,
     fontWeight: 'bold',
+    marginLeft: 15,
+    marginBottom: 15,
+  },
+
+  card: {
+    width: 180,
+    marginLeft: 15,
+  },
+
+  image: {
+    width: 180,
+    height: 260,
+    borderRadius: 15,
+  },
+
+  movieTitle: {
+    color: '#fff',
+    marginTop: 10,
     textAlign: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 
 });
