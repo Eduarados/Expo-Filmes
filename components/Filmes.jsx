@@ -6,17 +6,37 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 
-export default function Filmes({ title, movies }) {
+export default function Filmes({
+  title,
+  movies,
+  navigation,
+}) {
 
   const renderMovie = ({ item }) => (
 
-    <View style={styles.card}>
+    <TouchableOpacity
+
+      style={styles.card}
+
+      activeOpacity={0.8}
+
+      onPress={() =>
+
+        navigation.navigate(
+          'Details',
+          { movie: item }
+        )
+
+      }
+    >
 
       <Image
         source={{
-          uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`
+          uri:
+          `https://image.tmdb.org/t/p/w500${item.poster_path}`
         }}
         style={styles.image}
       />
@@ -28,7 +48,7 @@ export default function Filmes({ title, movies }) {
         {item.title}
       </Text>
 
-    </View>
+    </TouchableOpacity>
 
   );
 
@@ -41,18 +61,29 @@ export default function Filmes({ title, movies }) {
       </Text>
 
       <FlatList
+
         horizontal
+
         data={movies}
+
         renderItem={renderMovie}
-        keyExtractor={(item) => item.id.toString()}
+
+        keyExtractor={(item) =>
+          item.id.toString()
+        }
 
         showsHorizontalScrollIndicator={false}
 
         nestedScrollEnabled
 
+        directionalLockEnabled
+
         initialNumToRender={5}
+
         maxToRenderPerBatch={5}
+
         windowSize={5}
+
         removeClippedSubviews
 
       />
@@ -66,9 +97,6 @@ const styles = StyleSheet.create({
 
   container: {
     marginBottom: 30,
-    width: '100%',
-    flexdisplay: 'grid',
-    flexDirection: 'column',
   },
 
   title: {
